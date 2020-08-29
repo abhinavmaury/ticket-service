@@ -2,7 +2,7 @@ How To:
 
 Run with Binary
 *  `go build .`
-*  `./2c port 8080 config <path-to-config-json>`
+*  `./ticket-service port 9000 config
 
 Run without Binary
-* `go run . port 8080 config <path-to-config-json>`
+* `go run . port 9000
