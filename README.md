@@ -34,6 +34,7 @@ CREATE TABLE `users` (
 ``
 
 It contains 2 REST POST APIs
+
 - To generate Ticket -
 
 **Request URL-  {{url}}/api/customer/ticket/generate  
@@ -44,6 +45,8 @@ Request Body-
         "query": "hey there! I have a query"
     }**
     
+- For User Login -
+
 **Request URL-  {{url}}/api/agent/login  
  Request Body- 
      {
