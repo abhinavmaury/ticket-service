@@ -1,11 +1,9 @@
 # Ticket Service
-
 The User can generate the ticket for his query and that ticket is assigned to an agent to process the query of the customer.  
-In a live environment, there could be n number of users who are raising the tickets and there could be a dynamic set of agents who are solving the queries.  
-This service is handling the tickets which are coming in and assigning it to the agent who is free.  
-
+In a live environment, there could be n number of users who are raising the tickets and there could also be a dynamic set of agents who are solving the queries.  
+This service is handling the tickets which are coming in and assigning it to the agents who are free.  
 I have used the queue and inserting all the tickets into it and process the tickets concurrently. Concurrency is dependent upon the number of active agents.  
-Also handled the cases when some system fault occurs(e.g server stops working) and loses the queue. For handling this, we are again assigning the tickets into the queue as when the service restarts.
+Also handled the cases when some system fault occurs(e.g server stops working) and loses the queue. For handling this, we are again assigning the tickets into the queue as when the service restarts.  
 
 Clone this project
 - `git clone https://github.com/abhinavmaury/ticket-service.git`
