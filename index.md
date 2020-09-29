@@ -1,37 +1,60 @@
-## Welcome to GitHub Pages
+# Ticket Service
+The User can generate the ticket for his query and that ticket is assigned to an agent to process the query of the customer.  
+In a live environment, there could be n number of users who are raising the tickets and there could also be a dynamic set of agents who are solving the queries.  
+This service is handling the tickets which are coming in and assigning it to the agents who are free.  
+I have used the queue and inserting all the tickets into it and process the tickets concurrently. Concurrency is dependent upon the number of active agents.  
+Also handled the cases when some system fault occurs(e.g server stops working) and loses the queue. For handling this, we are again assigning the tickets into the queue as when the service restarts.  
 
-You can use the [editor on GitHub](https://github.com/abhinavmaury/ticket-service/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Clone this project
+- `git clone https://github.com/abhinavmaury/ticket-service.git`
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Import in IDE and run-
+It will run on port 9000
 
-### Markdown
+This service is using MySQL-
+- create user_ticket table-
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+``CREATE TABLE `user_ticket` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(45) NOT NULL,
+  `phone` varchar(45) NOT NULL,
+  `query` varchar(1000) NOT NULL,
+  `status` enum('created','in_progress','completed','rejected') NOT NULL DEFAULT 'created',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`));``
 
-```markdown
-Syntax highlighted code block
+- create user_ticket table-
 
-# Header 1
-## Header 2
-### Header 3
+``
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(45) NOT NULL,
+  `user_type` varchar(45) DEFAULT 'agent',
+  `phone` varchar(10) NOT NULL,
+  `is_online` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`));
+``
 
-- Bulleted
-- List
+It contains 2 POST APIs
 
-1. Numbered
-2. List
+- To generate Ticket -
 
-**Bold** and _Italic_ and `Code` text
+**Request URL-  {{url}}/api/customer/ticket/generate  
+Request Body- 
+    {
+        "user_id": "12345",
+        "phone": "7654345123",
+        "query": "hey there! I have a query"
+    }**
+    
+- For User Login -
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/abhinavmaury/ticket-service/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+**Request URL-  {{url}}/api/agent/login  
+ Request Body- 
+     {
+         "username": "abhinav",
+         "password": "12345"
+     }** 
